@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 
     <meta charset="UTF-8" />
@@ -10,7 +10,10 @@
 <body>
     <div class="container">
         <h1>Spring Blog App</h1>
+        <h2><a th:href="@{/register}">Register</a>
+            <a th:href="@{/login}">Login</a></h2>
         <hr/>
+        <h2><a th:href="@{/posts/new}">Create new post</a> </h2>
         <div class="posts-container">
             <div class="post" th:each="post : ${posts}">
                 <h2><a th:href="@{'/posts/' + ${post.id}}"
