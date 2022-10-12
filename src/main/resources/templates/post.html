@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BLOG :: post</title>
+</head>
+<body>
+<div class="container">
+    <a th:href="@{'/'}">Blog home</a>
+    <div class="post">
+        <h2 th:text="${post.getTitle()}">Title</h2>
+        <h5 id="load_date" th:text="'Published on ' + ${#temporals.format(post.getCreatedAt(), 'dd-MM-yyyy HH:mm')}"></h5>
+        <p th:text="${post.getBody()}">Body</p>
+        <br/>
+    </div>
+</div>
+</body>
+</html>
