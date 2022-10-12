@@ -9,9 +9,12 @@
 </head>
 <body>
 <div class="container">
+    <h1>Spring Blog App</h1>
+    <hr/>
     <a th:href="@{'/'}">Blog home</a>
     <div class="post">
         <h2 th:text="${post.getTitle()}">Title</h2>
+        <h5 th:text="'Published by ' + ${post.getAccount().getFirstName()} + ' ' + ${post.getAccount().getLastName()}">Author</h5>
         <h5 id="load_date" th:text="'Published on ' + ${#temporals.format(post.getCreatedAt(), 'dd-MM-yyyy HH:mm')}"></h5>
         <p th:text="${post.getBody()}">Body</p>
         <br/>
