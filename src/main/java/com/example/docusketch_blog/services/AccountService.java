@@ -3,6 +3,7 @@ package com.example.docusketch_blog.services;
 import com.example.docusketch_blog.models.Account;
 import com.example.docusketch_blog.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +15,16 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Optional<Account> getById(Long id){
         return accountRepository.findById(id);
+    }
+
+    public Optional<Account> getByEmail(String email){
+
+        return accountRepository.findOneByEmailIgnoreCase(email);
     }
 
     public List<Account> getAll(){
@@ -23,6 +32,7 @@ public class AccountService {
     }
 
     public Account save(Account account) {
-        return accountRepository.save(account);
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        return accountRepository.saveAndFlush(account);
     }
 }

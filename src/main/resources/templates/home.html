@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    lang="en">
 <head>
 
     <meta charset="UTF-8" />
@@ -10,8 +12,19 @@
 <body>
     <div class="container">
         <h1>Spring Blog App</h1>
-        <h2><a th:href="@{/register}">Register</a>
-            <a th:href="@{/login}">Login</a></h2>
+        <div sec:authorize="!isAuthenticated()">
+            <h3><a th:href="@{/register}">Register</a>
+                <a th:href="@{/login}">Login</a></h3>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}"
+            method="POST">
+                <h3>Logged in as <span sec:authentication="name">Username</span></h3>
+                <button type="submit">Logout</button>
+            </form>
+
+        </div>
+
         <hr/>
         <h2><a th:href="@{/posts/new}">Create new post</a> </h2>
         <div class="posts-container">

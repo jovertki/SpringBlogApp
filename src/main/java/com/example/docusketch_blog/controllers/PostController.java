@@ -47,7 +47,8 @@ public class PostController {
 
     @PostMapping("/posts/new")
     public String saveNewPost(@ModelAttribute Post post) {
-        Account account = accountService.getById(1L).get();
+        // TODO: replace it with account check
+        Account account = accountService.getByEmail("user.user@mail.com").get();
         post.setAccount(account);
 
 
