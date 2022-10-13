@@ -8,10 +8,15 @@
     <title>BLOG :: login</title>
 </head>
 <body>
-<h1>Spring Blog App</h1>
-<hr/>
-<h2>Login</h2>
+
+<div class="header">
+    <h1>Spring Blog App</h1>
+    <hr/>
+    <a th:href="@{'/'}">Blog home</a>
+</div>
+
 <div class="container">
+    <h2>Login</h2>
         <form th:action="@{'/login'}"
               method="POST">
             <div>

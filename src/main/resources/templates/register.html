@@ -8,33 +8,34 @@
     <title>BLOG :: login</title>
 </head>
 <body>
-<div>
+<div class="header">
     <h1>Spring Blog App</h1>
     <hr/>
-    <h2>Register</h2>
-    <div class="container">
-        <form th:action="@{'/register'}"
-              th:object="${account}"
-              method="POST">
-            <div>
-                <label for="email">Email</label>
-                <input id="email" type="text" th:field="*{email}" name="email" placeholder="email"/>
-            </div>
-            <div>
-                <label for="firstName">First name</label>
-                <input id="firstName" type="text" th:field="*{firstName}" name="firstName" placeholder="first name"/>
-            </div>
-            <div>
-                <label for="lastName">Last name</label>
-                <input id="lastName" type="text" th:field="*{lastName}" name="lastName" placeholder="last name"/>
-            </div>
-            <div>
-                <label for="password">Password</label>
-                <input id="password" type="text" th:field="*{password}" name="password" placeholder="password"/>
-            </div>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+    <a th:href="@{'/'}">Blog home</a>
+</div>
+<h2>Register</h2>
+<div class="container">
+    <form th:action="@{'/register'}"
+          th:object="${account}"
+          method="POST">
+        <div>
+            <label for="email">Email</label>
+            <input id="email" type="text" th:field="*{email}" name="email" placeholder="email"/>
+        </div>
+        <div>
+            <label for="firstName">First name</label>
+            <input id="firstName" type="text" th:field="*{firstName}" name="firstName" placeholder="first name"/>
+        </div>
+        <div>
+            <label for="lastName">Last name</label>
+            <input id="lastName" type="text" th:field="*{lastName}" name="lastName" placeholder="last name"/>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input id="password" type="text" th:field="*{password}" name="password" placeholder="password"/>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
 </div>
 </body>
 </html>

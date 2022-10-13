@@ -8,8 +8,11 @@
     <title>BLOG :: new post</title>
 </head>
 <body>
-<h1>Spring Blog App</h1>
-<hr/>
+<div class="header">
+    <h1>Spring Blog App</h1>
+    <hr/>
+    <a th:href="@{'/'}">Blog home</a>
+</div>
 <h2>Create new post</h2>
     <div class="container">
         <form th:action="@{/posts/new}"
@@ -22,7 +25,6 @@
             <div>
                 <label for="body">Post body</label>
                 <textarea id="body" th:field="*{body}">Post body</textarea>
-<!--                <input id="body" type="text" th:field="*{body}" placeholder="Post body"/>-->
             </div>
             <button type="submit">Publish</button>
         </form>

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 
     <meta charset="UTF-8" />
@@ -8,13 +10,20 @@
     <title>BLOG :: post</title>
 </head>
 <body>
-<div class="container">
+<div class="header">
     <h1>Spring Blog App</h1>
     <hr/>
     <a th:href="@{'/'}">Blog home</a>
+</div>
+<div class="container">
     <div class="post">
         <h2 th:text="${post.getTitle()}">Title</h2>
         <h5 th:text="'Published by ' + ${post.getAccount().getFirstName()} + ' ' + ${post.getAccount().getLastName()}">Author</h5>
+        <ul sec:authorize="isAuthenticated()">
+            <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
+            <li sec:authorize="hasAuthority('ROLE_ADMIN')"><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
+        </ul>
+        <h5 id="edit_date" th:text="'Last edit on ' + ${#temporals.format(post.getUpdatedAt(), 'dd-MM-yyyy HH:mm')}"></h5>
         <h5 id="load_date" th:text="'Published on ' + ${#temporals.format(post.getCreatedAt(), 'dd-MM-yyyy HH:mm')}"></h5>
         <p th:text="${post.getBody()}">Body</p>
         <br/>
