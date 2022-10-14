@@ -15,7 +15,7 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    public Optional<Post> getById(Long id) {
+    public Optional<Post> getById(String id) {
         return postRepository.findById(id);
     }
 

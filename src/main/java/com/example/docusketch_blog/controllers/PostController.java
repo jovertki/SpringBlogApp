@@ -25,7 +25,7 @@ public class PostController {
     private AccountService accountService;
 
     @GetMapping("/posts/{id}")
-    public String getPost(@PathVariable Long id, Model model){
+    public String getPost(@PathVariable String id, Model model){
 
 
         Optional<Post> optionalPost = postService.getById(id);
@@ -59,7 +59,7 @@ public class PostController {
 
     @GetMapping("/posts/{id}/edit")
     @PreAuthorize("isAuthenticated()")
-    public String getPostForEdit(@PathVariable Long id, Model model) {
+    public String getPostForEdit(@PathVariable String id, Model model) {
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isEmpty()){
             return "404";
@@ -73,7 +73,7 @@ public class PostController {
 
     @PostMapping("/posts/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String updatePost(@PathVariable Long id, @ModelAttribute Post post) {
+    public String updatePost(@PathVariable String id, @ModelAttribute Post post) {
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isEmpty()){
             return "404";
@@ -85,7 +85,7 @@ public class PostController {
 
     @GetMapping("/posts/{id}/delete")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String deletePost(@PathVariable Long id) {
+    public String deletePost(@PathVariable String id) {
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isEmpty()){
             return "404";

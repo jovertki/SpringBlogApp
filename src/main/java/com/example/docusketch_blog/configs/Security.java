@@ -17,7 +17,6 @@ public class Security {
     private static final String[] WHITELIST = {
             "/",
             "/register",
-            "/h2-console/**",
             "/"
     };
 
@@ -52,14 +51,6 @@ public class Security {
 
         return http.build();
     }
-//    @Override
-//    protected void configure(HttpSecurity security) throws Exception
-//    {
-//        security.headers().frameOptions().disable();
-//        security.httpBasic().disable();
-//        security.authorizeRequests().anyRequest().permitAll();
-//        security.cors().and().csrf().disable();
-//    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
