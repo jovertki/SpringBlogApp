@@ -11,8 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class Security {
-
+public class SecurityConfig {
 
     private static final String[] WHITELIST = {
             "/",
@@ -23,7 +22,7 @@ public class Security {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
-        // TODO: remove then finished with h2-console
+        // TODO: remove then finished with h2-console???
         http.cors().and().csrf().disable();
         http.headers().frameOptions().disable();
 

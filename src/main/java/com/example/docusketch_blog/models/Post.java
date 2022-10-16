@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Document
-//@Entity
 @Getter
 @Setter
 @NoArgsConstructor

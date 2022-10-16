@@ -5,12 +5,15 @@ import com.example.docusketch_blog.models.Post;
 import com.example.docusketch_blog.services.AccountService;
 import com.example.docusketch_blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -25,16 +28,15 @@ public class PostController {
     private AccountService accountService;
 
     @GetMapping("/posts/{id}")
-    public String getPost(@PathVariable String id, Model model){
-
+    public String getPost(@PathVariable String id, Model model) {
 
         Optional<Post> optionalPost = postService.getById(id);
-        if (optionalPost.isPresent()){
+        if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
             model.addAttribute("post", post);
             return "post";
         } else {
-            return "404";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -49,7 +51,7 @@ public class PostController {
     public String saveNewPost(@ModelAttribute Post post, @AuthenticationPrincipal UserDetails auth) {
         Optional<Account> optionalAccount = accountService.getByEmail(auth.getUsername());
         if (optionalAccount.isEmpty()){
-            return "404";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         Account account = optionalAccount.get();
         post.setAccount(account);
@@ -59,24 +61,30 @@ public class PostController {
 
     @GetMapping("/posts/{id}/edit")
     @PreAuthorize("isAuthenticated()")
-    public String getPostForEdit(@PathVariable String id, Model model) {
+    public String getPostForEdit(@AuthenticationPrincipal User auth, @PathVariable String id, Model model) {
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isEmpty()){
-            return "404";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        // TODO:check if the same user. Send 403 if not
-        Post post = optionalPost.get();
 
+        // TODO: do not show edit if not the same user
+        Post post = optionalPost.get();
+        if (!auth.getUsername().equals(post.getAccount().getEmail())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only edit your posts");
+        }
         model.addAttribute("post", post);
         return "post_edit";
     }
 
     @PostMapping("/posts/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String updatePost(@PathVariable String id, @ModelAttribute Post post) {
+    public String updatePost(@AuthenticationPrincipal User auth, @PathVariable String id, @ModelAttribute Post post) {
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isEmpty()){
-            return "404";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        if (!auth.getUsername().equals(post.getAccount().getEmail())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only edit your posts");
         }
         post.setUpdatedAt(LocalDateTime.now());
         postService.save(post);
@@ -88,7 +96,7 @@ public class PostController {
     public String deletePost(@PathVariable String id) {
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isEmpty()){
-            return "404";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         Post post = optionalPost.get();
         postService.delete(post);

@@ -1,6 +1,8 @@
 package com.example.docusketch_blog.services;
 
 import com.example.docusketch_blog.models.Account;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,9 +17,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component("userDetailsService")
+@NoArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
+    @Setter // for testing only
     private AccountService accountService;
 
     @Override

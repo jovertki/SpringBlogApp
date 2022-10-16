@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Component
 public class SeedData implements CommandLineRunner {
-
+    // TODO: do smth with 8081 access, put passwords to .env file
     @Autowired
     private PostService postService;
 

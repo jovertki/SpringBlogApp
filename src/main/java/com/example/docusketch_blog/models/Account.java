@@ -16,10 +16,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class Account {
 
-    @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private String id;
+    // TODO: add proper validation
 
+    @Id
     private String email;
 
     private String password;
@@ -28,13 +27,8 @@ public class Account {
 
     private String lastName;
 
-//    @OneToMany(mappedBy = "account")
     private List<Post> posts;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "account_authority",
-//    joinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")},
-//    inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
     private Set<Authority> authorities = new HashSet<>();
 
     @Override
