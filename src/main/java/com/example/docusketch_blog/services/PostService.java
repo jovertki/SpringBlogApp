@@ -22,6 +22,7 @@ public class PostService {
     public List<Post> getAll(){
         return postRepository.findAll();
     }
+
     public Post save(Post post) {
         if (post.getId() == null) {
             post.setCreatedAt(LocalDateTime.now());
@@ -32,5 +33,9 @@ public class PostService {
 
     public void delete(Post post) {
         postRepository.delete(post);
+    }
+
+    public List<Post> getAllSimilarName(String name) {
+        return postRepository.findPostsByTitleContainingIgnoreCase(name);
     }
 }
