@@ -38,11 +38,11 @@ class HomeControllerTest {
     private MockMvc mockMvc;
     private static Post post;
 
+    private static Account account;
     @BeforeAll
     public static void init(){
 
-
-        Account account = new Account();
+        account = new Account();
         account.setFirstName("TestFirstName");
         account.setLastName("TestLastName");
         account.setEmail("test.user@mail.com");
@@ -54,6 +54,7 @@ class HomeControllerTest {
         post.setBody("Test Body");
         post.setTitle("Test Title");
         post.setAccount(account);
+
     }
 
 
@@ -80,7 +81,7 @@ class HomeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
                 .andExpect(content()
-                        .string(containsString("<a href=\"/register\">Register</a>")));
+                        .string(containsString("Register")));
     }
     @Test
     void shouldShowLoginButtonToUnauthorizedUsers() throws Exception {
@@ -91,7 +92,7 @@ class HomeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
                 .andExpect(content()
-                        .string(containsString("<a href=\"/login\">Login</a>")));
+                        .string(containsString("Login")));
     }
 
     @Test
@@ -106,8 +107,30 @@ class HomeControllerTest {
                 .andExpect(content()
                         .string(containsString("Logged in as <span>testuser</span>")))
                 .andExpect(content()
-                        .string(containsString("<button type=\"submit\">Logout</button>")));
+                        .string(containsString("Logout")));
     }
 
+    @Test
+    void shouldFind3posts() throws Exception {
+
+        Post post2 = new Post();
+        post2.setId("1");
+        post2.setBody("Test Body");
+        post2.setTitle("Test Title1");
+        post2.setAccount(account);
+
+        Post post3 = new Post();
+        post3.setId("1");
+        post3.setBody("Test Body");
+        post3.setTitle("Test Title2");
+        post3.setAccount(account);
+
+        Mockito.when(postService.getAllSimilarName("title")).thenReturn(List.of(post, post2, post3));
+        this.mockMvc
+                .perform(get("/?q=title"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("home"))
+                .andExpect(model().attribute("posts", List.of(post, post2, post3)));
+    }
 
 }

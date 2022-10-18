@@ -23,6 +23,7 @@ public class Account {
     @Id
     @Email
     private String email;
+
     @Size(min = 8)
     private String password;
 

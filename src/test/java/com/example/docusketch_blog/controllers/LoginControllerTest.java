@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -34,5 +35,14 @@ class LoginControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("login"));
     }
-    // TODO: add no such user test
+    @Test
+    void getLoginPageError() throws Exception {
+        this.mockMvc
+                .perform(post("/login")
+                        .flashAttr("email", "nonExistent@mail.com")
+                        .flashAttr("password", "password"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login?error"));
+    }
+
 }

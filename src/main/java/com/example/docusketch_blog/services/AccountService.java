@@ -23,7 +23,6 @@ public class AccountService {
     }
 
     public Optional<Account> getByEmail(String email){
-        // TODO: add tests with different cases in email
         return accountRepository.findOneByEmailIgnoreCase(email);
     }
 

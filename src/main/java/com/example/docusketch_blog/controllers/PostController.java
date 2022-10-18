@@ -67,7 +67,6 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        // TODO: do not show edit if not the same user
         Post post = optionalPost.get();
         if (!auth.getUsername().equals(post.getAccount().getEmail())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only edit your posts");
