@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BLOG :: update post</title>
+    <title th:text="${action} == 'create' ?  'BLOG :: new post' : 'BLOG :: edit post'">BLOG :: edit post</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -38,9 +38,10 @@
         <div class="grid columns-1 gap-4 px-32 mt-8">
             <div class="border-2 border-slate-300 rounded p-4 bg-slate-200 shadow-md shadow-bg-slate-500">
 
-                <h2 class="text-xl border-b-2 border-slate-300 truncate mb-2 font-bold">Update post</h2>
+                <h2 class="text-xl border-b-2 border-slate-300 truncate mb-2 font-bold"
+                th:text="${action} == 'create' ?  'Create new post' : 'Edit post'">Action post</h2>
     <form th:object="${post}"
-          th:action="@{'/posts/{id}'(id=${post.id})}"
+          th:action="${action} == 'create' ? @{'/posts/new'} : @{'/posts/{id}'(id=${post.id})}"
           method="post">
         <input type="hidden" th:field="*{account}" />
         <input type="hidden" th:field="*{createdAt}" />

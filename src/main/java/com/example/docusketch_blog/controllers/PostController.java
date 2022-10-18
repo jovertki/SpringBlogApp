@@ -44,7 +44,8 @@ public class PostController {
     public String getNewPostPage(Model model){
         Post post = new Post();
         model.addAttribute("post", post);
-        return "post_new";
+        model.addAttribute("action", "create");
+        return "post_edit";
     }
 
     @PostMapping("/posts/new")

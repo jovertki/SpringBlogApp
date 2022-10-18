@@ -94,8 +94,9 @@ class PostControllerTest {
                 this.mockMvc
                         .perform(get("/posts/new"))
                         .andExpect(status().isOk())
-                        .andExpect(view().name("post_new"))
-                        .andExpect(model().attributeExists("post"));
+                        .andExpect(view().name("post_edit"))
+                        .andExpect(model().attributeExists("post"))
+                        .andExpect(model().attribute("action", "create"));
         }
         @WithMockUser(username = "test.user@mail.com")
         @Test
