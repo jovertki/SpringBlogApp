@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,11 +18,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class Account {
 
-    // TODO: add proper validation
+    // TODO: add proper validation tests
 
     @Id
+    @Email
     private String email;
-
+    @Size(min = 8)
     private String password;
 
     private String firstName;

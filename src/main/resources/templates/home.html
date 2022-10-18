@@ -3,37 +3,60 @@
     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
     lang="en">
 <head>
-
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BLOG :: home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Spring Blog App</h1>
-        <div sec:authorize="!isAuthenticated()">
-            <h3><a th:href="@{/register}">Register</a>
-                <a th:href="@{/login}">Login</a></h3>
+    <div class="header shadow-lg shadow-current w-screen h-screen m-0 bg-white dark:bg-black">
+        <div class="px-32 bg-slate-200 m-auto py-4 flex justify-between items-center">
+            <a class="text-3xl font-black opacity-80" href="/">Spring Blog App</a>
+            <div class="flex gap-4" sec:authorize="!isAuthenticated()">
+                <a class="px-4 border-2 border-slate-300 rounded bg-slate-200 hover:bg-slate-300 ease-in-out duration-300 cursor-pointer" th:href="@{/register}">Register</a>
+                <a class="px-4 border-2 border-slate-300 rounded bg-slate-200 hover:bg-slate-300 ease-in-out duration-300 cursor-pointer" th:href="@{/login}">Login</a>
+            </div>
+            <div class="flex gap-4" sec:authorize="isAuthenticated()">
+                <form class="flex gap-4" th:action="@{/logout}"
+                method="POST">
+                    <h3 class="self-center">Logged in as <span sec:authentication="name">Username</span></h3>
+                    <button type="submit" class="px-4 border-2 border-slate-300 rounded bg-slate-200 hover:bg-slate-300 ease-in-out duration-300 cursor-pointer">Logout</button>
+                </form>
+            </div>
         </div>
-        <div sec:authorize="isAuthenticated()">
-            <form th:action="@{/logout}"
-            method="POST">
-                <h3>Logged in as <span sec:authentication="name">Username</span></h3>
-                <button type="submit">Logout</button>
-            </form>
-
-        </div>
-        <hr/>
-        <h2><a th:href="@{/posts/new}">Create new post</a> </h2>
-        <div class="posts-container">
-            <div class="post" th:each="post : ${posts}">
-                <h2><a th:href="@{'/posts/' + ${post.id}}"
-                       th:text="${post.title}">Title</a>
-                </h2>
-                <p th:text="${post.body}">body</p>
-                <h5 th:text="'Published on ' + ${post.createdAt}">Created At</h5>
-                <br/>
+        <div class="relative pt-4 bg-slate-300 pb-16" style="min-height: calc(100vh - 65px)">
+            <div class="relative flex px-32 justify-between items-center">
+                <form class="rounded" id="form">
+                    <label for="query"></label>
+                    <input class="border-2 border-slate-300 rounded pl-4 h-10 bg-white shadow-md shadow-bg-slate-500" type="search" id="query" name="q" placeholder="Search...">
+                    <button class="py-1 px-4 border-2 border-slate-400 rounded bg-slate-200 hover:bg-slate-400 hover:text-slate-200 ease-in-out duration-300 cursor-pointer">Search</button>
+                </form>
+                <a class="py-1 px-4 border-2 border-slate-400 rounded bg-slate-200 hover:bg-slate-400 hover:text-slate-200 ease-in-out duration-300 cursor-pointer"
+                    th:href="@{/posts/new}">Create new post
+                </a>
+            </div>
+            <div class="grid columns-1 gap-4 px-32 mt-6">
+                <div class="post border-2 border-slate-300 rounded p-4 bg-slate-200 shadow-md shadow-bg-slate-500 hover:shadow-xl ease-in-out duration-300" th:each="post : ${posts}">
+                    <h2 class="text-2xl border-b-2 border-slate-300 truncate mb-4">
+                        <a
+                            th:href="@{'/posts/' + ${post.id}}"
+                            th:text="${post.title}"
+                        >
+                        Title
+                        </a>
+                    </h2>
+                    <p class="inline-flex text-justify max-h-24 text-ellipsis overflow-hidden mb-4" th:text="${post.body}">body</p>
+                    <h5 class="text-xs" th:text="'Published on ' + ${#temporals.format(post.getCreatedAt(), 'dd-MM-yyyy HH:mm')}">Created At</h5>
+                </div>
             </div>
         </div>
     </div>

@@ -1,35 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
 <head>
-
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BLOG :: update post</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<div class="header">
-    <h1>Spring Blog App</h1>
-    <hr/>
-    <a th:href="@{'/'}">Blog home</a>
-</div>
-<h2>Update post</h2>
-<div class="container">
+<div class="header shadow-lg shadow-current w-screen h-screen m-0 bg-white dark:bg-black">
+    <div class="px-32 bg-slate-200 m-auto py-4 flex justify-between items-center">
+        <a class="text-3xl font-black opacity-80" href="/">Spring Blog App</a>
+        <div class="flex gap-4" sec:authorize="!isAuthenticated()">
+            <a class="px-4 border-2 border-slate-300 rounded bg-slate-200 hover:bg-slate-300 ease-in-out duration-300 cursor-pointer" th:href="@{/register}">Register</a>
+            <a class="px-4 border-2 border-slate-300 rounded bg-slate-200 hover:bg-slate-300 ease-in-out duration-300 cursor-pointer" th:href="@{/login}">Login</a>
+        </div>
+        <div class="flex gap-4" sec:authorize="isAuthenticated()">
+            <form class="flex gap-4" th:action="@{/logout}"
+                  method="POST">
+                <h3 class="self-center">Logged in as <span sec:authentication="name">Username</span></h3>
+                <button type="submit" class="px-4 border-2 border-slate-300 rounded bg-slate-200 hover:bg-slate-300 ease-in-out duration-300 cursor-pointer">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="relative pt-4 bg-slate-300 pb-16" style="min-height: calc(100vh - 65px)">
+        <div class="grid columns-1 gap-4 px-32 mt-8">
+            <div class="border-2 border-slate-300 rounded p-4 bg-slate-200 shadow-md shadow-bg-slate-500">
+
+                <h2 class="text-xl border-b-2 border-slate-300 truncate mb-2 font-bold">Update post</h2>
     <form th:object="${post}"
           th:action="@{'/posts/{id}'(id=${post.id})}"
           method="post">
         <input type="hidden" th:field="*{account}" />
         <input type="hidden" th:field="*{createdAt}" />
-        <div>
-            <label for="title">Title</label>
-            <input id="title" type="text" th:field="*{title}" th:value="${post.title}"/>
+
+        <!-- Title input -->
+        <div class="mb-1 mt-4">
+            <label for="title">Title</label><input
+                type="text"
+                class="form-control block px-3 text-s font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                id="title"
+                placeholder="Title"
+                name="title"
+                th:field="*{title}" th:value="${post.title}"
+        />
         </div>
         <div>
-            <label for="body">Post body</label>
-            <textarea id="body" th:field="*{body}" th:value="${post.body}">Body</textarea>
+            <label for="body">Write a post</label>
+            <textarea class="block p-2.5 w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Body"
+                      id="body"
+                      rows="15  "
+                      th:field="*{body}"
+                      th:value="${post.body}">Body</textarea>
         </div>
-        <button type="submit">Publish</button>
+        <button class="mt-1 px-4 border-2 border-slate-300 rounded bg-slate-200 hover:bg-slate-300 ease-in-out duration-300 cursor-pointer"
+        type="submit">
+        Publish</button>
     </form>
 </div>
+</div>
+    </div>
+</div>
+
 </body>
 </html>
