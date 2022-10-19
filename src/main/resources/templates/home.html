@@ -19,54 +19,53 @@
 </head>
 <body>
     <div class="header shadow-lg shadow-current w-screen h-screen m-0 bg-white dark:bg-black">
-        <div class="px-32 bg-slate-200 m-auto py-4 flex justify-between items-center">
+        <div class="px-32 bg-indigo-200 m-auto py-4 flex justify-between items-center">
             <a class="text-3xl font-black opacity-80" href="/">Spring Blog App</a>
             <div class="flex gap-4" sec:authorize="!isAuthenticated()">
-                <a class="px-4 border-2 border-slate-300 rounded bg-slate-200 hover:bg-slate-300 ease-in-out duration-300 cursor-pointer" th:href="@{/register}">Register</a>
-                <a class="px-4 border-2 border-slate-300 rounded bg-slate-200 hover:bg-slate-300 ease-in-out duration-300 cursor-pointer" th:href="@{/login}">Login</a>
+                <a class="px-4 border-2 border-indigo-300 rounded bg-indigo-200 hover:bg-indigo-300 ease-in-out duration-300 cursor-pointer" th:href="@{/register}">Register</a>
+                <a class="px-4 border-2 border-indigo-300 rounded bg-indigo-200 hover:bg-indigo-300 ease-in-out duration-300 cursor-pointer" th:href="@{/login}">Login</a>
             </div>
             <div class="flex gap-4" sec:authorize="isAuthenticated()">
                 <form class="flex gap-4" th:action="@{/logout}"
                 method="POST">
                     <h3 class="self-center">Logged in as <span sec:authentication="name">Username</span></h3>
-                    <button type="submit" class="px-4 border-2 border-slate-300 rounded bg-slate-200 hover:bg-slate-300 ease-in-out duration-300 cursor-pointer">Logout</button>
+                    <button type="submit" class="px-4 border-2 border-indigo-300 rounded bg-indigo-200 hover:bg-indigo-300 ease-in-out duration-300 cursor-pointer">Logout</button>
                 </form>
             </div>
         </div>
-        <div class="relative pt-4 bg-slate-300 pb-16" style="min-height: calc(100vh - 65px)">
+        <div class="relative pt-4 bg-indigo-300 pb-16" style="min-height: calc(100vh - 65px)">
             <div class="relative flex px-32 justify-between items-center">
                 <form class="rounded" id="form">
                     <label for="query"></label>
-                    <input class="border-2 border-slate-300 rounded pl-4 h-10 bg-white shadow-md shadow-bg-slate-500" type="search" id="query" name="q" placeholder="Search...">
-                    <button class="py-1 px-4 border-2 border-slate-400 rounded bg-slate-200 hover:bg-slate-400 hover:text-slate-200 ease-in-out duration-300 cursor-pointer">Search</button>
+                    <input class="border-2 border-indigo-300 rounded pl-4 h-10 bg-white shadow-md shadow-bg-indigo-500" type="search" id="query" name="q" placeholder="Search...">
+                    <button class="py-1 px-4 border-2 border-indigo-400 rounded bg-indigo-200 hover:bg-indigo-400 hover:text-indigo-200 ease-in-out duration-300 cursor-pointer">Search</button>
                 </form>
-                <a class="py-1 px-4 border-2 border-slate-400 rounded bg-slate-200 hover:bg-slate-400 hover:text-slate-200 ease-in-out duration-300 cursor-pointer"
+                <a class="py-1 px-4 border-2 border-indigo-400 rounded bg-indigo-200 hover:bg-indigo-400 hover:text-indigo-200 ease-in-out duration-300 cursor-pointer"
                     th:href="@{/posts/new}">Create new post
                 </a>
             </div>
             <div class="grid columns-1 gap-4 px-32 mt-6" th:if="${posts.size() == 0}">
-                <div class="post border-2 border-slate-300 rounded p-4 bg-slate-200 shadow-md shadow-bg-slate-500 hover:shadow-xl ease-in-out duration-300">
-                    <h2 class="text-2xl border-b-2 border-slate-300 truncate mb-4">
+                <div class="post border-2 border-indigo-300 rounded p-4 bg-indigo-200 shadow-md shadow-bg-indigo-500 hover:shadow-xl ease-in-out duration-300">
+                    <h2 class="text-2xl border-b-2 border-indigo-300 truncate mb-4">
                         No posts yet, make the first one!
                     </h2>
                 </div>
             </div>
             <div class="grid columns-1 gap-4 px-32 mt-6" th:if="${posts.size() != 0}">
-
-                <div class="post border-2 border-slate-300 rounded p-4 bg-slate-200 shadow-md shadow-bg-slate-500 hover:shadow-xl ease-in-out duration-300" th:each="post : ${posts}">
-                    <h2 class="text-2xl border-b-2 border-slate-300 truncate mb-4">
-                        <a
-                            th:href="@{'/posts/' + ${post.id}}"
-                            th:text="${post.title}"
-                        >
+                <div class="posts list" th:each="post : ${posts}">
+                    <a th:href="@{'/posts/' + ${post.id}}">
+                    <div class="post border-2 border-indigo-300 rounded p-4 bg-indigo-200 shadow-md shadow-bg-indigo-500 hover:shadow-xl ease-in-out duration-300">
+                    <h2 class="text-2xl border-b-2 border-indigo-300 truncate mb-4" th:text="${post.title}">
                         Title
-                        </a>
                     </h2>
-                    <p class="inline-flex text-justify max-h-24 text-ellipsis overflow-hidden mb-4" th:text="${post.body}">body</p>
+                    <img th:if="${post.getImageId() != null}" style="max-height:500px;" class="max-w-full max-h-15px rounded-lg" alt="sample" th:src="@{'/images/' + ${post.getImageId()}}"/>
+                        <p class="inline-flex text-justify max-h-24 text-ellipsis overflow-hidden mb-4" th:text="${post.body}">body</p>
                     <h5 class="text-xs" th:text="'Published on ' + ${#temporals.format(post.getCreatedAt(), 'dd-MM-yyyy HH:mm')}">Created At</h5>
                 </div>
+                </a>
+                </div>
+            </div>
             </div>
         </div>
-    </div>
 </body>
 </html>
