@@ -74,7 +74,7 @@ class HomeControllerTest {
 
         Mockito.when(postService.getAllPageable(pageable)).thenReturn(new PageImpl<>(List.of(post)));
         this.mockMvc
-                .perform(get("/"))
+                .perform(get("/feed/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
                 .andExpect(model().attributeExists("posts"));
@@ -87,7 +87,7 @@ class HomeControllerTest {
 
         Mockito.when(postService.getAllPageable(pageable)).thenReturn(new PageImpl<>(List.of(post)));
         this.mockMvc
-                .perform(get("/"))
+                .perform(get("/feed/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
                 .andExpect(content()
@@ -100,7 +100,7 @@ class HomeControllerTest {
 
         Mockito.when(postService.getAllPageable(pageable)).thenReturn(new PageImpl<>(List.of(post)));
         this.mockMvc
-                .perform(get("/"))
+                .perform(get("/feed/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
                 .andExpect(content()
@@ -115,7 +115,7 @@ class HomeControllerTest {
 
         Mockito.when(postService.getAllPageable(pageable)).thenReturn(new PageImpl<>(List.of(post)));
         this.mockMvc
-                .perform(get("/"))
+                .perform(get("/feed/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
                 .andExpect(content()
@@ -152,7 +152,7 @@ class HomeControllerTest {
         Pageable pageable = PageRequest.of(0,5, Sort.by("createdAt").descending());
         Mockito.when(postService.getAllSimilarName("title",pageable)).thenReturn(page);
         this.mockMvc
-                .perform(get("/?q=title"))
+                .perform(get("/feed/1?q=title"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
                 .andExpect(model().attribute("posts", List.of(post3, post2, post)));

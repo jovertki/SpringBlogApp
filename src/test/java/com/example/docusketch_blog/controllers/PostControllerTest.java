@@ -88,6 +88,17 @@ class PostControllerTest {
         }
 
         @Test
+        void shouldReturnPostNewPageUnauthorized() throws Exception {
+                Mockito.when(accountService
+                                .getByEmail("testt.user@mail.com"))
+                        .thenReturn(Optional.of(account));
+                Mockito.when(postService.getById("1")).thenReturn(Optional.of(post));
+                this.mockMvc
+                        .perform(get("/posts/new"))
+                        .andExpect(status().isUnauthorized());
+        }
+        @WithMockUser
+        @Test
         void shouldReturnPostNewPage() throws Exception {
                 Mockito.when(accountService
                                 .getByEmail("testt.user@mail.com"))
@@ -100,6 +111,7 @@ class PostControllerTest {
                         .andExpect(model().attributeExists("post"))
                         .andExpect(model().attribute("action", "create"));
         }
+
         @WithMockUser(username = "test.user@mail.com")
         @Test
         void shouldRedirectToNewPost() throws Exception {
