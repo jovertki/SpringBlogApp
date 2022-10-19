@@ -4,6 +4,7 @@ import com.example.docusketch_blog.configs.SecurityConfig;
 import com.example.docusketch_blog.models.Account;
 import com.example.docusketch_blog.models.Authority;
 import com.example.docusketch_blog.services.AccountService;
+import com.example.docusketch_blog.services.ImageService;
 import com.example.docusketch_blog.services.PostService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -26,9 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RegisterControllerTest {
     @MockBean
     private PostService postService;
-
     @MockBean
     private AccountService accountService;
+    @MockBean
+    private ImageService imageService;
     @Autowired
     private MockMvc mockMvc;
 

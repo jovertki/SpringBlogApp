@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -19,11 +20,13 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model, @RequestParam(value="q", required = false) String q) {
         List<Post> posts;
+        // TODO: get first N
         if (q == null) {
             posts = postService.getAll();
         } else {
             posts = postService.getAllSimilarName(q);
         }
+        Collections.reverse(posts);
         model.addAttribute("posts", posts);
         return "home";
     }

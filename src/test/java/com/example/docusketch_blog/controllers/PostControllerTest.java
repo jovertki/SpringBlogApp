@@ -5,6 +5,7 @@ import com.example.docusketch_blog.models.Account;
 import com.example.docusketch_blog.models.Authority;
 import com.example.docusketch_blog.models.Post;
 import com.example.docusketch_blog.services.AccountService;
+import com.example.docusketch_blog.services.ImageService;
 import com.example.docusketch_blog.services.PostService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,8 @@ class PostControllerTest {
         private AccountService accountService;
         @Autowired
         private MockMvc mockMvc;
-
+        @MockBean
+        private ImageService imageService;
         private static Post post;
         private static Account account;
 
@@ -101,6 +103,14 @@ class PostControllerTest {
         @WithMockUser(username = "test.user@mail.com")
         @Test
         void shouldRedirectToNewPost() throws Exception {
+
+                Post postSaved = new Post();
+                postSaved.setId("1");
+                postSaved.setBody("Test Body");
+                postSaved.setTitle("Test Title");
+                postSaved.setAccount(account);
+
+                Mockito.when(postService.save(post)).thenReturn(postSaved);
                 Mockito.when(accountService
                                 .getByEmail("test.user@mail.com"))
                         .thenReturn(Optional.of(account));
@@ -108,7 +118,7 @@ class PostControllerTest {
                 this.mockMvc
                         .perform(post("/posts/new").flashAttr("post", post))
                         .andExpect(status().is3xxRedirection())
-                        .andExpect(redirectedUrl("/posts/" + post.getId()));
+                        .andExpect(redirectedUrl("/posts/1"));
         }
 
 

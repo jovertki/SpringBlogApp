@@ -16,13 +16,10 @@ import java.time.LocalDateTime;
 public class Post {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-//    @Column(nullable = false)
     private String id;
 
     private String title;
 
-//    @Column(columnDefinition = "TEXT")
     private String body;
 
     private LocalDateTime createdAt;
@@ -30,7 +27,7 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @NotNull
-//    @ManyToOne
-//    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
+
+    private String imageId;
 }

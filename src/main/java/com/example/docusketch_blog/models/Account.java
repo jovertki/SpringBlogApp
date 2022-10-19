@@ -18,8 +18,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class Account {
 
-    // TODO: add proper validation tests
-
     @Id
     @Email
     private String email;

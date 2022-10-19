@@ -5,6 +5,7 @@ import com.example.docusketch_blog.models.Account;
 import com.example.docusketch_blog.models.Authority;
 import com.example.docusketch_blog.models.Post;
 import com.example.docusketch_blog.services.AccountService;
+import com.example.docusketch_blog.services.ImageService;
 import com.example.docusketch_blog.services.PostService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +36,8 @@ class HomeControllerTest {
     private PostService postService;
     @MockBean
     private AccountService accountService;
+    @MockBean
+    private ImageService imageService;
     @Autowired
     private MockMvc mockMvc;
     private static Post post;
@@ -125,12 +129,19 @@ class HomeControllerTest {
         post3.setTitle("Test Title2");
         post3.setAccount(account);
 
-        Mockito.when(postService.getAllSimilarName("title")).thenReturn(List.of(post, post2, post3));
+        Mockito.when(postService.save(post)).thenReturn(post);
+        Mockito.when(postService.save(post2)).thenReturn(post2);
+        Mockito.when(postService.save(post3)).thenReturn(post3);
+        List<Post> list = new ArrayList<>();
+        list.add(post);
+        list.add(post2);
+        list.add(post3);
+        Mockito.when(postService.getAllSimilarName("title")).thenReturn(list);
         this.mockMvc
                 .perform(get("/?q=title"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
-                .andExpect(model().attribute("posts", List.of(post, post2, post3)));
+                .andExpect(model().attribute("posts", List.of(post3, post2, post)));
     }
 
 }

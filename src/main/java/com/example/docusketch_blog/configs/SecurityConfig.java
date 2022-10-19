@@ -15,8 +15,7 @@ public class SecurityConfig {
 
     private static final String[] WHITELIST = {
             "/",
-            "/register",
-            "/"
+            "/register"
     };
 
     @Bean
@@ -30,6 +29,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers(WHITELIST).permitAll()
                 .antMatchers(HttpMethod.GET, "/posts/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/images/*").permitAll()
                 .anyRequest().authenticated();
 
         http

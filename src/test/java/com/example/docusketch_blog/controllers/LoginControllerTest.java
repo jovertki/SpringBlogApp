@@ -2,6 +2,7 @@ package com.example.docusketch_blog.controllers;
 
 import com.example.docusketch_blog.configs.SecurityConfig;
 import com.example.docusketch_blog.services.AccountService;
+import com.example.docusketch_blog.services.ImageService;
 import com.example.docusketch_blog.services.PostService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,8 @@ class LoginControllerTest {
 
     @MockBean
     private AccountService accountService;
-
+    @MockBean
+    private ImageService imageService;
     @MockBean
     private PostService postService;
     @Test
