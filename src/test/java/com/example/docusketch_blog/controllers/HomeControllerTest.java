@@ -15,10 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.*;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -57,6 +59,7 @@ class HomeControllerTest {
         post.setId("1");
         post.setBody("Test Body");
         post.setTitle("Test Title");
+        post.setCreatedAt(LocalDateTime.now());
         post.setAccount(account);
 
     }
@@ -67,8 +70,9 @@ class HomeControllerTest {
 
     @Test
     void shouldAllowAccessForAnonymousUser() throws Exception {
+        Pageable pageable = PageRequest.of( 0, 5, Sort.by("createdAt").descending());
 
-        Mockito.when(postService.getAll()).thenReturn(List.of(post));
+        Mockito.when(postService.getAllPageable(pageable)).thenReturn(new PageImpl<>(List.of(post)));
         this.mockMvc
                 .perform(get("/"))
                 .andExpect(status().isOk())
@@ -79,7 +83,9 @@ class HomeControllerTest {
     @Test
     void shouldShowRegistrationButtonToUnauthorizedUsers() throws Exception {
 
-        Mockito.when(postService.getAll()).thenReturn(List.of(post));
+        Pageable pageable = PageRequest.of( 0, 5, Sort.by("createdAt").descending());
+
+        Mockito.when(postService.getAllPageable(pageable)).thenReturn(new PageImpl<>(List.of(post)));
         this.mockMvc
                 .perform(get("/"))
                 .andExpect(status().isOk())
@@ -90,7 +96,9 @@ class HomeControllerTest {
     @Test
     void shouldShowLoginButtonToUnauthorizedUsers() throws Exception {
 
-        Mockito.when(postService.getAll()).thenReturn(List.of(post));
+        Pageable pageable = PageRequest.of( 0, 5, Sort.by("createdAt").descending());
+
+        Mockito.when(postService.getAllPageable(pageable)).thenReturn(new PageImpl<>(List.of(post)));
         this.mockMvc
                 .perform(get("/"))
                 .andExpect(status().isOk())
@@ -103,7 +111,9 @@ class HomeControllerTest {
     @WithMockUser(username="testuser")
     void shouldShowHelloToAuthorizedUsers() throws Exception {
 
-        Mockito.when(postService.getAll()).thenReturn(List.of(post));
+        Pageable pageable = PageRequest.of( 0, 5, Sort.by("createdAt").descending());
+
+        Mockito.when(postService.getAllPageable(pageable)).thenReturn(new PageImpl<>(List.of(post)));
         this.mockMvc
                 .perform(get("/"))
                 .andExpect(status().isOk())
@@ -121,22 +131,26 @@ class HomeControllerTest {
         post2.setId("1");
         post2.setBody("Test Body");
         post2.setTitle("Test Title1");
+        post2.setCreatedAt(post.getCreatedAt().plusDays(1));
         post2.setAccount(account);
 
         Post post3 = new Post();
         post3.setId("1");
         post3.setBody("Test Body");
         post3.setTitle("Test Title2");
+        post3.setCreatedAt(post.getCreatedAt().plusDays(2));
         post3.setAccount(account);
 
         Mockito.when(postService.save(post)).thenReturn(post);
         Mockito.when(postService.save(post2)).thenReturn(post2);
         Mockito.when(postService.save(post3)).thenReturn(post3);
         List<Post> list = new ArrayList<>();
-        list.add(post);
-        list.add(post2);
         list.add(post3);
-        Mockito.when(postService.getAllSimilarName("title")).thenReturn(list);
+        list.add(post2);
+        list.add(post);
+        Page<Post> page = new PageImpl<>(list);
+        Pageable pageable = PageRequest.of(0,5, Sort.by("createdAt").descending());
+        Mockito.when(postService.getAllSimilarName("title",pageable)).thenReturn(page);
         this.mockMvc
                 .perform(get("/?q=title"))
                 .andExpect(status().isOk())

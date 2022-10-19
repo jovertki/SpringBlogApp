@@ -28,8 +28,10 @@ public class SecurityConfig {
         http
                 .authorizeRequests()
                 .antMatchers(WHITELIST).permitAll()
+                .antMatchers(HttpMethod.GET, "/posts/new").authenticated()
                 .antMatchers(HttpMethod.GET, "/posts/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/images/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/feed/*").permitAll()
                 .anyRequest().authenticated();
 
         http

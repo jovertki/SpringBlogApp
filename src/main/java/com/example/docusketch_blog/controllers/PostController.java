@@ -73,10 +73,10 @@ public class PostController {
         Account account = optionalAccount.get();
         post.setAccount(account);
         post = postService.save(post);
-        if (file != null) {
+        if (file != null && !file.isEmpty()) {
             post.setImageId(imageService.save(file, post.getId()));
+            postService.save(post);
         }
-        postService.save(post);
         return "redirect:/posts/" + post.getId();
     }
 
@@ -110,8 +110,7 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only edit your posts");
         }
         post.setUpdatedAt(LocalDateTime.now());
-        if (file != null) {
-//            imageService.deleteById(post.getImageId());
+        if (file != null && !file.isEmpty()) {
             post.setImageId(imageService.replace(file, post.getImageId(), post.getId()));
         }
         postService.save(post);

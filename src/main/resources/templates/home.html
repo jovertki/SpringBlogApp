@@ -37,9 +37,21 @@
             <div class="relative flex px-32 justify-between items-center">
                 <form class="rounded" id="form">
                     <label for="query"></label>
-                    <input class="border-2 border-indigo-300 rounded pl-4 h-10 bg-white shadow-md shadow-bg-indigo-500" type="search" id="query" name="q" placeholder="Search...">
+                    <input class="border-2 border-indigo-300 rounded pl-4 pr-2 h-10 bg-white shadow-md shadow-bg-indigo-500" type="search" id="query" name="q" placeholder="Search...">
                     <button class="py-1 px-4 border-2 border-indigo-400 rounded bg-indigo-200 hover:bg-indigo-400 hover:text-indigo-200 ease-in-out duration-300 cursor-pointer">Search</button>
                 </form>
+                <div class="grid grid-cols-3 shadow-md shadow-bg-indigo-500 justify-items-center border-1 border-indigo-400 rounded bg-indigo-200">
+                    <a th:if="${prevPage}" class="px-4 text-2xl cursor-pointer text-indigo-400 hover:text-white"
+                       th:href="@{'/feed/' + ${prevPage}}">&lt</a>
+                    <a th:if="!${prevPage}" class="px-4 text-2xl text-indigo-100"
+                       >&lt</a>
+                    <p class="pt-0.5 px-4 border-1 border-indigo-200 rounded text-black text-xl"
+                       th:text="${currentPage}">10</p>
+                    <a th:if="${nextPage}" class="px-4 text-2xl cursor-pointer text-indigo-400 hover:text-white"
+                       th:href="@{'/feed/' + ${nextPage}}">&gt</a>
+                    <a th:if="!${nextPage}" class="px-4 text-2xl text-indigo-100"
+                    >&gt</a>
+                </div>
                 <a class="py-1 px-4 border-2 border-indigo-400 rounded bg-indigo-200 hover:bg-indigo-400 hover:text-indigo-200 ease-in-out duration-300 cursor-pointer"
                     th:href="@{/posts/new}">Create new post
                 </a>
@@ -58,8 +70,8 @@
                     <h2 class="text-2xl border-b-2 border-indigo-300 truncate mb-4" th:text="${post.title}">
                         Title
                     </h2>
-                    <img th:if="${post.getImageId() != null}" style="max-height:500px;" class="max-w-full max-h-15px rounded-lg" alt="sample" th:src="@{'/images/' + ${post.getImageId()}}"/>
-                        <p class="inline-flex text-justify max-h-24 text-ellipsis overflow-hidden mb-4" th:text="${post.body}">body</p>
+                    <img th:if="${post.getImageId() != '' && post.getImageId() != null}" style="max-height:500px;" class="max-w-full mb-2 max-h-15px rounded-lg" alt="sample" th:src="@{'/images/' + ${post.getImageId()}}"/>
+                        <p class="mt-1 inline-flex text-justify max-h-24 text-ellipsis overflow-hidden mb-4" th:text="${post.body}">body</p>
                     <h5 class="text-xs" th:text="'Published on ' + ${#temporals.format(post.getCreatedAt(), 'dd-MM-yyyy HH:mm')}">Created At</h5>
                 </div>
                 </a>

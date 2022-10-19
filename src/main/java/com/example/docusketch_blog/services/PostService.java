@@ -3,6 +3,8 @@ package com.example.docusketch_blog.services;
 import com.example.docusketch_blog.models.Post;
 import com.example.docusketch_blog.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,8 +21,8 @@ public class PostService {
         return postRepository.findById(id);
     }
 
-    public List<Post> getAll(){
-        return postRepository.findAll();
+    public Page<Post> getAllPageable(Pageable pageable){
+        return postRepository.findAll(pageable);
     }
 
     public Post save(Post post) {
@@ -35,7 +37,11 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public List<Post> getAllSimilarName(String name) {
-        return postRepository.findPostsByTitleContainingIgnoreCase(name);
+    public Page<Post> getAllSimilarName(String name, Pageable pageable) {
+        return postRepository.findByTitleIsLikeIgnoreCase(name, pageable);
+    }
+
+    public List<Post> getAll() {
+        return postRepository.findAll();
     }
 }
