@@ -4,6 +4,4 @@ services:
         container_name: SpringBlogApp
         build: .
         ports:
-            - '0.0.0.0:${PORT}:8080'
-        networks:
-            - spring_blog_app_network
+            - '${PORT}:8080'
