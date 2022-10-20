@@ -1,5 +1,14 @@
 version: "3.8"
 services:
+    app:
+        container_name: SpringBlogApp
+        build: .
+        ports:
+            - '8080:8080'
+        networks:
+            - spring_blog_app_network
+        depends_on:
+            - mongodb
     mongodb:
         image: mongo
         container_name: mongodb
@@ -10,18 +19,10 @@ services:
         environment:
             - MONGO_INITDB_ROOT_USERNAME=rootuser
             - MONGO_INITDB_ROOT_PASSWORD=rootpass
-    mongo-express:
-        image: mongo-express
-        container_name: mongo-express
-        restart: always
-        ports:
-            - '8081:8081'
-        environment:
-            - ME_CONFIG_MONGODB_ADMINUSERNAME=rootuser
-            - ME_CONFIG_MONGODB_ADMINPASSWORD=rootpass
-            - ME_CONFIG_MONGODB_SERVER=mongodb
+        networks:
+            - spring_blog_app_network
 volumes:
     data: {}
 networks:
-    default:
-        name: mongodb_network
+    spring_blog_app_network:
+        driver: bridge
