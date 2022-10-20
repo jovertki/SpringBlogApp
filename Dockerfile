@@ -8,13 +8,13 @@ COPY --from=build /usr/src/app/target/SpringBlogApp-0.0.1-SNAPSHOT.jar /usr/app/
 
 # Railway hosting
 # -----------------
-EXPOSE ${PORT}
+#EXPOSE ${PORT}
 # -----------------
 
 
 # Local development
 # -----------------
-#EXPOSE 8080
+EXPOSE 8080
 # -----------------
 
 
