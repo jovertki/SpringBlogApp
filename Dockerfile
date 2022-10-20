@@ -12,5 +12,5 @@ RUN mvn -q -f /usr/src/app/pom.xml clean package
 
 FROM openjdk:19-jdk-alpine
 COPY --from=build /usr/src/app/target/SpringBlogApp-0.0.1-SNAPSHOT.jar /usr/app/SpringBlogApp-0.0.1-SNAPSHOT.jar
-EXPOSE 8080
+EXPOSE ${PORT}
 ENTRYPOINT ["java","-jar","/usr/app/SpringBlogApp-0.0.1-SNAPSHOT.jar"]
