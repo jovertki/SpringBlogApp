@@ -158,4 +158,22 @@ class HomeControllerTest {
                 .andExpect(model().attribute("posts", List.of(post3, post2, post)));
     }
 
+    @Test
+    void shouldThrow404BigNumber() throws Exception {
+
+        Page<Post> page = new PageImpl<>(List.of(post));
+        Pageable pageable = PageRequest.of(9,5, Sort.by("createdAt").descending());
+        Mockito.when(postService.getAllPageable(pageable)).thenReturn(page);
+        this.mockMvc
+                .perform(get("/feed/10"))
+                .andExpect(status().isNotFound());
+    }
+    @Test
+    void shouldThrow404String() throws Exception {
+        this.mockMvc
+                .perform(get("/feed/randomString"))
+                .andExpect(status().isNotFound());
+    }
+
+
 }

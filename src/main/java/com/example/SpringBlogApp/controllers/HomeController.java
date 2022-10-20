@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-
 @Controller
 public class HomeController {
 
@@ -29,30 +26,33 @@ public class HomeController {
         return "redirect:/feed/1";
     }
 
-    @GetMapping("/feed/{pageNumber}")
+    @GetMapping("/feed/{pageNumberString}")
     public String home(Model model,
                        @RequestParam(value="q", required = false) String q,
-                       @PathVariable int pageNumber) {
-        List<Post> posts;
+                       @PathVariable String pageNumberString) {
+        int pageNumber;
+        try {
+            pageNumber = Integer.parseInt(pageNumberString);
+        } catch (NumberFormatException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
         Pageable pageable = PageRequest.of(pageNumber - 1, 5, Sort.by("createdAt").descending());
-        int totalPages;
         Page<Post> page;
         if (q == null) {
             page = postService.getAllPageable(pageable);
         } else {
             page = postService.getAllSimilarName(q, pageable);
         }
-        posts = page.getContent();
-        totalPages = page.getTotalPages();
-        model.addAttribute("posts", posts);
+        int totalPages = page.getTotalPages();
+        if (pageNumber > totalPages) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        model.addAttribute("posts", page.getContent());
         if (pageNumber > 1) {
             model.addAttribute("prevPage", pageNumber - 1);
         }
         if (pageNumber < totalPages) {
             model.addAttribute("nextPage", pageNumber + 1);
-        }
-        if (pageNumber > totalPages) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         model.addAttribute("currentPage", pageNumber);
         return "home";

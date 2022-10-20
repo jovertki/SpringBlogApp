@@ -21,9 +21,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
-        // TODO: remove then finished with h2-console???
-        http.cors().and().csrf().disable();
-        http.headers().frameOptions().disable();
+        http.csrf().disable();
 
         http
                 .authorizeRequests()
