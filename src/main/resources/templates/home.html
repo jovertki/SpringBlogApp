@@ -70,7 +70,13 @@
                     <h2 class="text-2xl border-b-2 border-indigo-300 truncate mb-4" th:text="${post.title}">
                         Title
                     </h2>
-                    <img th:if="${post.getImageId() != '' && post.getImageId() != null}" style="max-height:500px;" class="max-w-full mb-2 max-h-15px rounded-lg" alt="sample" th:src="@{'/images/' + ${post.getImageId()}}"/>
+                        <div class="object-center">
+                    <img class="max-w-full mb-2 max-h-15px rounded-lg"
+                         th:if="${post.getImageId() != '' && post.getImageId() != null}"
+                         style="max-height:500px;margin: 0 auto"
+                         alt="sample"
+                         th:src="@{'/images/' + ${post.getImageId()}}"/>
+                        </div>
                         <p class="mt-1 inline-flex text-justify max-h-24 text-ellipsis overflow-hidden mb-4" th:text="${post.body}">body</p>
                     <h5 class="text-xs" th:text="'Published on ' + ${#temporals.format(post.getCreatedAt(), 'dd-MM-yyyy HH:mm')}">Created At</h5>
                 </div>
