@@ -44,7 +44,7 @@ public class HomeController {
             page = postService.getAllSimilarName(q, pageable);
         }
         int totalPages = page.getTotalPages();
-        if (pageNumber > totalPages) {
+        if (pageNumber > totalPages && page.getTotalElements() != 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         model.addAttribute("posts", page.getContent());
