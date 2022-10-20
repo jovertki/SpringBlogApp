@@ -14,7 +14,7 @@
     <name>DocuSketch_blog</name>
     <description>DocuSketch_blog</description>
     <properties>
-        <java.version>19</java.version>
+        <java.version>18</java.version>
     </properties>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
