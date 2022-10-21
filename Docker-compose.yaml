@@ -7,7 +7,8 @@ services:
             - '8080:8080'
         networks:
             - spring_blog_app_network
-        depends_on: mongodb
+        depends_on:
+            - mongodb
     mongodb:
         image: mongo
         container_name: mongodb
@@ -35,5 +36,5 @@ services:
 volumes:
     data: {}
 networks:
-    default:
-        name: mongodb_network
+    spring_blog_app_network:
+        driver: bridge
