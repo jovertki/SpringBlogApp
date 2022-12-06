@@ -18,7 +18,7 @@ The project initially fills database with a couple of posts, a user and an admin
 
 Access points:
 
-* [localhost:8080](localhost:8080) - site
+* [localhost:8080](localhost:8080) - site 
 * [localhost:8081](localhost:8081) - mongo-express
 
 Any user can create a post with a title, an image and text.
@@ -27,7 +27,7 @@ User can edit their posts.
 
 Only admin can delete posts.
 
-Images are stored in database.
+Images are stored in database
 
 ## Tests
 
