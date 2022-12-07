@@ -1,6 +1,6 @@
 # Spring Blog App
 
-Spring Blog App is a web blogging platform hosted on Railway.app [here](https://jovertkispringblog.up.railway.app).
+Spring Blog App is a web blogging platform hosted on Railway.app [here](https://jovertkispringblog.up.railway.app) (Free hosting, might be offline).
 
 With this project I aimed to write a blogging platform to improve my skills with Spring Framework and to introduce myself to MongoDB, Thymeleaf, Tailwind, HTML and CSS.
 
